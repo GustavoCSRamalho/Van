@@ -12,4 +12,12 @@ class FirebaseReference {
     fun getChildReferenceId(userId: String): DatabaseReference{
         return getChildReference()!!.child(userId)
     }
+
+    fun getVanReference(): DatabaseReference {
+        return FirebaseInitializer().getInstance()!!.reference!!.child("Vans")
+    }
+
+    fun getVanReferenceEmail(email: String): DatabaseReference{
+        return getVanReference()!!.child(email)
+    }
 }

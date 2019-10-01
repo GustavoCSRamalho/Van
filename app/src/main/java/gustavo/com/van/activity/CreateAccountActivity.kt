@@ -49,8 +49,9 @@ class CreateAccountActivity : AppCompatActivity() {
         val lastName = et_last_name?.text.toString()
         val email = et_email?.text.toString()
         val password = et_password?.text.toString()
+        val role = roleSelect.selectedItem.toString()
 
-        return User(firstName, lastName,password,email)
+        return User(firstName, lastName,password,email,role)
     }
 
     fun updateUserInfoAndUI() {

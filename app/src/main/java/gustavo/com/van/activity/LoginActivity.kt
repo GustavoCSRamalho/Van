@@ -10,6 +10,7 @@ import android.widget.Toast
 import gustavo.com.van.R
 import gustavo.com.van.firebase.auth.service.FirebaseAuthService
 import gustavo.com.van.model.User
+import gustavo.com.van.storage.UserStorage
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -38,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
     fun getUser(): User{
         val email = et_email?.text.toString()
         val password = et_password?.text.toString()
-        return User(email = email, password = password,firstName = "", lastName = "")
+        return User(email = email, password = password)
     }
 
     fun loginUser() {
@@ -48,15 +49,24 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG, "Logging in user.")
             FirebaseAuthService().signInWithEmailAndPassword(user,{
                 mProgressBar!!.hide()
-            }, TAG,this@LoginActivity, {updateUI()})
+            }, TAG,this@LoginActivity, {updateUI(it)})
         }else{
             Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun updateUI() {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    fun updateUI(user: User) {
+        var intent: Intent? = null
+        if(user.role.equals("1")){
+            intent = Intent(this@LoginActivity, MainStudentActivity::class.java)
+            Toast.makeText(this@LoginActivity, "Student",Toast.LENGTH_LONG).show()
+            println(UserStorage.userStorage.toString())
+        }else{
+            intent = Intent(this@LoginActivity, MainStudentActivity::class.java)
+            Toast.makeText(this@LoginActivity, "Van",Toast.LENGTH_LONG).show()
+        }
+
+        intent!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 

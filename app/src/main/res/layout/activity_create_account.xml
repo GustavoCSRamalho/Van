@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.CreateAccountActivity">
-
     <EditText
         android:id="@+id/et_first_name"
         style="@style/viewCustom"
@@ -33,14 +32,17 @@
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword" />
+    <Spinner
+        android:id="@+id/roleSelect"
+        style="@style/viewCustom"
+        android:entries="@array/roles"
+        android:layout_below="@id/et_password"/>
     <Button
         android:id="@+id/btn_register"
         style="@style/viewCustom"
-        android:layout_below="@id/et_password"
+        android:layout_below="@id/roleSelect"
         android:background="@color/colorAccent"
         android:text="@string/create_act"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
-
-
 </RelativeLayout>

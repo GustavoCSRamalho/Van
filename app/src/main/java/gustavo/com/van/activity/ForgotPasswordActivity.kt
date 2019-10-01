@@ -21,7 +21,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     fun getUser(): User{
         val email = et_email?.text.toString()
-        return User(email = email, password = "", firstName = "", lastName = "")
+        return User(email = email)
     }
 
     fun updateUI() {
