@@ -9,16 +9,35 @@ import gustavo.com.van.storage.UserStorage
 
 class FirebaseService {
 
-    fun setFirstnameAndLastNameAndRoleAndEmailUserDB(user: User, currentUserDb : DatabaseReference){
+    fun setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user: User, currentUserDb : DatabaseReference){
         currentUserDb.child("firstName").setValue(user.firstName)
         currentUserDb.child("lastName").setValue(user.lastName)
         currentUserDb.child("role").setValue(user.role)
         currentUserDb.child("email").setValue(user.email)
+        currentUserDb.child("van").setValue(user.van)
     }
 
-    fun setVanUserID(userId: String, vanReference : DatabaseReference) {
+    fun setUserIDVans(userId: String, vanReference : DatabaseReference) {
         vanReference.child("userId").setValue(userId)
     }
+
+    fun setVouVans(userId: String, vanReference : DatabaseReference,vou: String,date: String) {
+        vanReference.child(date.replace("/","_")).child(userId).child("vou").setValue(vou)
+    }
+
+    fun setVoltoVans(userId: String, vanReference : DatabaseReference,volto: String,date: String) {
+        vanReference.child(date.replace("/","_")).child(userId).child("volto").setValue(volto)
+    }
+
+
+//    fun setVouVans(vou: String, vanReference: DatabaseReference){
+//        vanReference.child("vou").setValue(vou)
+//    }
+
+//    fun setVoltoVans(volto: String, vanReference: DatabaseReference){
+//        vanReference.child("volto").setValue(volto)
+//    }
+
 
     fun getUser(user: User, currentUserDb : DatabaseReference, method: (user: User) -> Unit){
         currentUserDb.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -27,6 +46,7 @@ class FirebaseService {
                 children.forEach{
                     val userDB = (it.getValue(User::class.java) as User )
                     if(userDB.email.toString().equals(user.email.toString())){
+                        //Mudar o van para pegar automaticamente
                         UserStorage.userStorage = userDB.copy()
                         method(userDB)
                     }

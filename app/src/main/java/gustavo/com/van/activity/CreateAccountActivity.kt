@@ -50,8 +50,10 @@ class CreateAccountActivity : AppCompatActivity() {
         val email = et_email?.text.toString()
         val password = et_password?.text.toString()
         val role = roleSelect.selectedItem.toString()
+        val van = "Ramalho"
+        //TODO: Deixar em um input porteriomente
 
-        return User(firstName, lastName,password,email,role)
+        return User(firstName, lastName,password,email,role, van)
     }
 
     fun updateUserInfoAndUI() {

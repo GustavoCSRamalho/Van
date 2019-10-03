@@ -9,7 +9,6 @@ import gustavo.com.van.firebase.auth.FirebaseInitializer
 import gustavo.com.van.firebase.database.references.FirebaseReference
 import gustavo.com.van.firebase.database.service.FirebaseService
 import gustavo.com.van.model.User
-import gustavo.com.van.storage.UserStorage
 
 class FirebaseAuthService {
 
@@ -31,10 +30,10 @@ class FirebaseAuthService {
                 Log.d(TAG, "createUserWithEmail:success")
                 val userId = mAuth!!.currentUser!!.uid
                 verifyEmail(context)
-                val currentUserDb = FirebaseReference().getChildReferenceId(userId)
-                FirebaseService().setFirstnameAndLastNameAndRoleAndEmailUserDB(user,currentUserDb)
-                val vanReference = FirebaseReference().getVanReferenceEmail("Ramalho")
-                FirebaseService().setVanUserID(userId,vanReference)
+                val currentUserDb = FirebaseReference().getChildReferenceIdUserDB(userId)
+                FirebaseService().setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user,currentUserDb)
+//                val vanReference = FirebaseReference().getVanReferenceVans(user.van.toString())
+//                FirebaseService().setUserIDVans(userId,vanReference)
 
 //                updateUserInfoAndUI()
             } else {
@@ -44,6 +43,9 @@ class FirebaseAuthService {
             }
 
         }
+    }
+    fun getUserID(): String{
+        return mAuth!!.currentUser!!.uid
     }
 
     fun verifyEmail(context: Context) {
@@ -72,7 +74,7 @@ class FirebaseAuthService {
 
             if(task.isSuccessful){
                 Log.d(TAG,"signInWithEmail:success")
-                val firebaseReference = FirebaseReference().getChildReference()
+                val firebaseReference = FirebaseReference().getChildReferenceUserDB()
                 FirebaseService().getUser(user,firebaseReference, {
                     updateUI(it)
                     progressBar()

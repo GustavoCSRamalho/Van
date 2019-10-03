@@ -5,19 +5,20 @@ import gustavo.com.van.firebase.database.FirebaseInitializer
 
 class FirebaseReference {
 
-    fun getChildReference(): DatabaseReference{
+    fun getChildReferenceUserDB(): DatabaseReference{
         return FirebaseInitializer().getInstance()!!.reference!!.child("Users")
     }
 
-    fun getChildReferenceId(userId: String): DatabaseReference{
-        return getChildReference()!!.child(userId)
+    fun getChildReferenceIdUserDB(userId: String): DatabaseReference{
+        return getChildReferenceUserDB()!!.child(userId)
     }
 
-    fun getVanReference(): DatabaseReference {
+    fun getVanReferenceVans(): DatabaseReference {
         return FirebaseInitializer().getInstance()!!.reference!!.child("Vans")
     }
 
-    fun getVanReferenceEmail(email: String): DatabaseReference{
-        return getVanReference()!!.child(email)
+    fun getVanReferenceVans(van: String): DatabaseReference{
+        return getVanReferenceVans()!!.child(van)
     }
+
 }
