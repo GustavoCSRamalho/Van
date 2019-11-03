@@ -27,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         mProgressBar = ProgressDialog(this)
 
-
         tv_forgot_password!!
             .setOnClickListener { startActivity(
                 Intent(this@LoginActivity,
@@ -62,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                 mProgressBar!!.hide()
             }, TAG,this@LoginActivity, {updateUI(it)})
         }else{
-            Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Preencha todos os dados!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -76,13 +75,12 @@ class LoginActivity : AppCompatActivity() {
             intent = Intent(this@LoginActivity, MainVanActivity::class.java)
             Toast.makeText(this@LoginActivity, "Van",Toast.LENGTH_LONG).show()
         }
-
         intent!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 
     fun progressBar(){
-        mProgressBar!!.setMessage("Registering User...")
+        mProgressBar!!.setMessage("Logando Usuario...")
         mProgressBar!!.show()
     }
 }

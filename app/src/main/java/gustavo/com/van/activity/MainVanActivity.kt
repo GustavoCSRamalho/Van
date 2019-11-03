@@ -11,6 +11,7 @@ import gustavo.com.van.firebase.database.service.FirebaseService
 import gustavo.com.van.model.ModelStudentResponseList
 import gustavo.com.van.model.StudentResponse
 import gustavo.com.van.storage.UserStorage
+import gustavo.com.van.utils.Calendar
 import kotlinx.android.synthetic.main.activity_main_van.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -25,12 +26,9 @@ class MainVanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_van)
         recyclerView = van_list_recyclerview
-        FirebaseService().getDayStudentsVans(getCalendarFormated(), {
+        FirebaseService().getDayStudentsVans(Calendar().getCalendarFormated(), {
             setMultableStudentResponses(it)
         })
-
-
-
 //        recyclerView.adapter = VanListAdapter(notes(),this)
 //        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 //        recyclerView.layoutManager = layoutManager
@@ -69,11 +67,7 @@ class MainVanActivity : AppCompatActivity() {
         val date = Date()
         val sdf: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 //        val dateParsed = sdf.parse(date.toString())
-
-
 //        val novaData=  sdf.parse(sdf.format(date)) as Date
-
-
 //        val calendar: Calendar = Calendar.getInstance()
 //        calendar.time = novaData
 //        val newDate: Date = calendar.time

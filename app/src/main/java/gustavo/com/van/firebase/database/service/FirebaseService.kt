@@ -91,6 +91,27 @@ class FirebaseService {
             })
     }
 
+    fun getVansNames(setListVan:(valor: String) -> Unit, setListOfVans:() -> Unit){
+        setListOfVans()
+        val firebaseReference = FirebaseReference().getVanReferenceVans()
+        firebaseReference.addListenerForSingleValueEvent(object:  ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                val children = data.children
+                children.forEach{
+                    val key = it.key.toString()
+                    println("DATA : ")
+                    println(key)
+                    setListVan(key)
+                }
+            }
+
+        })
+    }
+
     fun setUserInformationsIntoStudentResponse(userId: String, studentResponse: StudentResponse?,
                                                metodo: (modelStudentResponseList: ModelStudentResponseList) -> Unit){
         val firebaseReference = FirebaseReference().getChildReferenceIdUserDB(userId)
