@@ -63,20 +63,20 @@ class MainVanActivity : AppCompatActivity() {
     }
 
 
-    fun getCalendarFormated():String {
-        val date = Date()
-        val sdf: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        val dateParsed = sdf.parse(date.toString())
-//        val novaData=  sdf.parse(sdf.format(date)) as Date
-//        val calendar: Calendar = Calendar.getInstance()
-//        calendar.time = novaData
-//        val newDate: Date = calendar.time
-//        println("Calendar : ")
-//        println(calendar.time.toString())
-//        println("Testando date")
-//        println(newDate.toString())
-//        return novaData.toString()
-
-        return sdf.format(date)
-    }
+//    fun getCalendarFormated():String {
+//        val date = Date()
+//        val sdf: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+////        val dateParsed = sdf.parse(date.toString())
+////        val novaData=  sdf.parse(sdf.format(date)) as Date
+////        val calendar: Calendar = Calendar.getInstance()
+////        calendar.time = novaData
+////        val newDate: Date = calendar.time
+////        println("Calendar : ")
+////        println(calendar.time.toString())
+////        println("Testando date")
+////        println(newDate.toString())
+////        return novaData.toString()
+//
+//        return sdf.format(date)
+//    }
 }
