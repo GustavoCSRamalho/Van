@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import gustavo.com.van.R
 import gustavo.com.van.firebase.auth.service.FirebaseAuthService
 import gustavo.com.van.model.User
 import gustavo.com.van.storage.UserStorage
+import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.et_email
+import kotlinx.android.synthetic.main.activity_login.et_password
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         mProgressBar = ProgressDialog(this)
 
+
         tv_forgot_password!!
             .setOnClickListener { startActivity(
                 Intent(this@LoginActivity,
@@ -33,7 +38,13 @@ class LoginActivity : AppCompatActivity() {
                 CreateAccountActivity::class.java)
         ) }
 
-        btn_login!!.setOnClickListener{loginUser()}
+        btn_login!!.setOnClickListener{
+            try{
+                loginUser()
+            }catch (e: Exception){
+                Toast.makeText(this, e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun getUser(): User{
@@ -57,12 +68,12 @@ class LoginActivity : AppCompatActivity() {
 
     fun updateUI(user: User) {
         var intent: Intent? = null
-        if(user.role.equals("1")){
+        if(user.role.equals("Estudante")){
             intent = Intent(this@LoginActivity, MainStudentActivity::class.java)
             Toast.makeText(this@LoginActivity, "Student",Toast.LENGTH_LONG).show()
             println(UserStorage.userStorage.toString())
         }else{
-            intent = Intent(this@LoginActivity, MainStudentActivity::class.java)
+            intent = Intent(this@LoginActivity, MainVanActivity::class.java)
             Toast.makeText(this@LoginActivity, "Van",Toast.LENGTH_LONG).show()
         }
 

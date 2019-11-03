@@ -14,32 +14,49 @@
         android:id="@+id/calendarInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Data" />
+        android:layout_marginTop="20dp"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Data"
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/calendarData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Data a ser preenchida" />
+        android:layout_marginTop="40dp"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Data a ser preenchida"
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="70dp"
+        >
 
         <Button
             android:id="@+id/buttonVou"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="Vou" />
+            android:background="@drawable/round_button"
+            android:fontFamily="cursive"
+            android:text="Vou"
+            />
 
         <Button
             android:id="@+id/buttonVolto"
-            android:layout_width="wrap_content"
+            android:layout_width="161dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
+            android:background="@drawable/round_button"
+            android:fontFamily="cursive"
             android:text="Volto" />
     </LinearLayout>
-
 </LinearLayout>

@@ -4,8 +4,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import gustavo.com.van.firebase.auth.service.FirebaseAuthService
+import gustavo.com.van.firebase.database.references.FirebaseReference
+import gustavo.com.van.model.ModelStudentResponseList
+import gustavo.com.van.model.StudentResponse
 import gustavo.com.van.model.User
 import gustavo.com.van.storage.UserStorage
+import gustavo.com.van.utils.Calendar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class FirebaseService {
 
@@ -27,6 +35,83 @@ class FirebaseService {
 
     fun setVoltoVans(userId: String, vanReference : DatabaseReference,volto: String,date: String) {
         vanReference.child(date.replace("/","_")).child(userId).child("volto").setValue(volto)
+    }
+
+    fun getStudentVan(setVou:() -> Unit,setVolto:() -> Unit,setStudentResponse: () -> Unit){
+        val date = Calendar().getCalendarFormated()
+        val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
+        var exist = false
+        vanReference.child(date.replace("/","_")).child(FirebaseAuthService().getUserID()).addListenerForSingleValueEvent(
+            object: ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                println(data.toString())
+                if(data.value == null){
+                    setStudentResponse()
+                }else{
+                    var studentResponse = data.getValue(StudentResponse::class.java) as StudentResponse
+                            if(studentResponse.vou.equals("sim")){
+                                setVou()
+                            }
+                            if(studentResponse.volto.equals("sim")){
+                                setVolto()
+                            }
+                }
+            }
+        })
+    }
+
+
+    fun getDayStudentsVans(date: String, metodo:(modelStudentResponseList: ModelStudentResponseList) -> Unit){
+        val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
+        vanReference.child(date.replace("/","_")).
+            addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(data: DataSnapshot) {
+                    println("Entrei no looop")
+                    val children = data.children
+                    println(children.toString())
+                    children.forEach{
+                        println("key : ")
+                        println(it.key.toString())
+                        println("value : ")
+                        println(it.getValue(StudentResponse::class.java).toString())
+                        var studentResponse = it.getValue(StudentResponse::class.java) as StudentResponse
+                        setUserInformationsIntoStudentResponse(it.key.toString(),studentResponse,{
+                            metodo(it)
+                        })
+
+                    }
+                }
+                override fun onCancelled(data: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
+    }
+
+    fun setUserInformationsIntoStudentResponse(userId: String, studentResponse: StudentResponse?,
+                                               metodo: (modelStudentResponseList: ModelStudentResponseList) -> Unit){
+        val firebaseReference = FirebaseReference().getChildReferenceIdUserDB(userId)
+        firebaseReference.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                var user = data.getValue(User::class.java) as User
+
+                studentResponse!!.nomeESobrenome = user.firstName + " " + user.lastName
+                studentResponse!!.foto = "Sua foto aqui"
+                println("StudentResponse information : ")
+                println(studentResponse.toString())
+                metodo(ModelStudentResponseList(key = data.key.toString(),value = studentResponse.copy()))
+
+            }
+
+        })
+
     }
 
 

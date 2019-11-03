@@ -37,10 +37,17 @@
         style="@style/viewCustom"
         android:entries="@array/roles"
         android:layout_below="@id/et_password"/>
+    <EditText
+        android:id="@+id/et_van"
+        style="@style/viewCustom"
+        android:layout_below="@id/roleSelect"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
     <Button
         android:id="@+id/btn_register"
         style="@style/viewCustom"
-        android:layout_below="@id/roleSelect"
+        android:layout_below="@id/et_van"
         android:background="@color/colorAccent"
         android:text="@string/create_act"
         android:textColor="@android:color/white"

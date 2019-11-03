@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:maxHeight="350dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/van_item_title_foto"-->
+            <!--            android:layout_width="54dp"-->
+            <!--            android:layout_height="match_parent"-->
+            <!--            android:layout_marginRight="50px"-->
+            <!--            android:text="Foto" />-->
+            <TextView
+                android:id="@+id/van_item_title_nome"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="50px"
+                android:fontFamily="cursive"
+                android:text="Gustavo Ramalho"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="299dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/van_item_title_vou"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="cursive"
+                    android:text="Vou :"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/van_item_vou"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="cursive"
+                    android:text="value"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/van_checkbox_vou"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/van_item_title_volto"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="cursive"
+                    android:text="Volto :"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/van_item_volto"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="cursive"
+                    android:text="value"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/van_checkbox_volto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView >

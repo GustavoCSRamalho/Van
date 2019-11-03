@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -27,12 +29,29 @@ class CreateAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_account)
         mProgressBar = ProgressDialog(this)
         btn_register!!.setOnClickListener { createNewAccount() }
+
+//        roleSelect!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+//                var value = parent!!.getItemAtPosition(pos).toString()
+//                if(value.equals("Estudante")){
+//                    et_van.visibility = View.VISIBLE
+//                }else{
+//                    et_van.visibility = View.INVISIBLE
+//                }
+//            }
+//
+//        }
+
     }
 
     fun createNewAccount(){
         val user = getUser()
         if ((TextUtils.isEmpty(user.firstName).not()).and((TextUtils.isEmpty(user.lastName).not())).and((
-                    TextUtils.isEmpty(user.email).not())).and((TextUtils.isEmpty(user.password).not()))) {
+                    TextUtils.isEmpty(user.email).not())).and((TextUtils.isEmpty(user.password).not())).and((user.role.equals("Selecione um papel").not()))) {
             progressBar()
             FirebaseAuthService().createUserWithEmailAndPassword(user,{
                 mProgressBar!!.hide()
@@ -50,7 +69,7 @@ class CreateAccountActivity : AppCompatActivity() {
         val email = et_email?.text.toString()
         val password = et_password?.text.toString()
         val role = roleSelect.selectedItem.toString()
-        val van = "Ramalho"
+        val van = et_van?.text.toString()
         //TODO: Deixar em um input porteriomente
 
         return User(firstName, lastName,password,email,role, van)

@@ -6,7 +6,7 @@
     tools:context=".activity.LoginActivity">
     <EditText
         android:id="@+id/et_email"
-        style="@style/viewCustom"
+        style="@style/viewCustomInit"
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress" />
