@@ -1,9 +1,11 @@
 package gustavo.com.van.firebase.database.service
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import gustavo.com.van.firebase.auth.FirebaseInitializer
 import gustavo.com.van.firebase.auth.service.FirebaseAuthService
 import gustavo.com.van.firebase.database.references.FirebaseReference
 import gustavo.com.van.model.ModelStudentResponseList
@@ -17,7 +19,16 @@ import kotlinx.coroutines.launch
 
 class FirebaseService {
 
-    fun setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user: User, currentUserDb : DatabaseReference){
+    var mAuth: FirebaseAuth? = null
+
+    init{
+        mAuth = FirebaseInitializer().getInstance()!!
+    }
+
+    fun setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user: User){
+        val userId = mAuth!!.currentUser!!.uid
+        val currentUserDb = FirebaseReference().getChildReferenceIdUserDB(userId)
+
         currentUserDb.child("firstName").setValue(user.firstName)
         currentUserDb.child("lastName").setValue(user.lastName)
         currentUserDb.child("role").setValue(user.role)
@@ -65,11 +76,13 @@ class FirebaseService {
     }
 
 
-    fun getDayStudentsVans(date: String, metodo:(modelStudentResponseList: ModelStudentResponseList) -> Unit){
+    fun getDayStudentsVans(date: String, metodo:(modelStudentResponseList: ModelStudentResponseList) -> Unit,
+                           setMapStudentResponse: () -> Unit){
         val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
         vanReference.child(date.replace("/","_")).
             addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(data: DataSnapshot) {
+                    setMapStudentResponse() // Adicionado por ultimo, qualquer erro mudar **
                     println("Entrei no looop")
                     val children = data.children
                     println(children.toString())
@@ -135,17 +148,8 @@ class FirebaseService {
 
     }
 
-
-//    fun setVouVans(vou: String, vanReference: DatabaseReference){
-//        vanReference.child("vou").setValue(vou)
-//    }
-
-//    fun setVoltoVans(volto: String, vanReference: DatabaseReference){
-//        vanReference.child("volto").setValue(volto)
-//    }
-
-
-    fun getUser(user: User, currentUserDb : DatabaseReference, method: (user: User) -> Unit){
+    fun getUser(user: User, method: (user: User) -> Unit){
+        val currentUserDb  = FirebaseReference().getChildReferenceUserDB()
         currentUserDb.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(data: DataSnapshot) {
                 val children = data!!.children

@@ -39,10 +39,6 @@ class CreateAccountActivity : AppCompatActivity() {
 
         FirebaseService().getVansNames({
             listOfVans.add(it)
-            listOfVans.forEach{
-                println("Value : ")
-                println(it)
-            }
         },{
             setListOfVans()
         })

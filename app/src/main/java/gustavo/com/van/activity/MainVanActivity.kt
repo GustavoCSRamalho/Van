@@ -22,29 +22,26 @@ class MainVanActivity : AppCompatActivity() {
     var mapStudentResponse = mutableMapOf<String, StudentResponse>()
     lateinit var recyclerView: RecyclerView
 
+    fun setMapStudentResponse(){
+        mapStudentResponse = mutableMapOf<String, StudentResponse>()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_van)
         recyclerView = van_list_recyclerview
         FirebaseService().getDayStudentsVans(Calendar().getCalendarFormated(), {
             setMultableStudentResponses(it)
-        })
-//        recyclerView.adapter = VanListAdapter(notes(),this)
-//        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-//        recyclerView.layoutManager = layoutManager
+        },{setMapStudentResponse()})
     }
 
     fun setMultableStudentResponses(modelStudentResponseList:ModelStudentResponseList){//key: String, value: StudentResponse
         mapStudentResponse.put(modelStudentResponseList.key!!, modelStudentResponseList.value!!)
         var list = mutableListOf<StudentResponse>()
         mapStudentResponse.forEach{
-            println("Information studentResponse")
-            println(it.value)
             list.add(it.value)
         }
         atualizarUI(list)
-        println("Teste surpresa !!")
-        println(modelStudentResponseList.toString())
     }
 
     fun atualizarUI(list: List<StudentResponse>){
@@ -52,31 +49,4 @@ class MainVanActivity : AppCompatActivity() {
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
     }
-
-
-    private fun notes(): List<StudentResponse>{
-        return listOf(
-            StudentResponse("sim","nao"),
-            StudentResponse("sim","sim"),
-            StudentResponse("nao","nao")
-        )
-    }
-
-
-//    fun getCalendarFormated():String {
-//        val date = Date()
-//        val sdf: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-////        val dateParsed = sdf.parse(date.toString())
-////        val novaData=  sdf.parse(sdf.format(date)) as Date
-////        val calendar: Calendar = Calendar.getInstance()
-////        calendar.time = novaData
-////        val newDate: Date = calendar.time
-////        println("Calendar : ")
-////        println(calendar.time.toString())
-////        println("Testando date")
-////        println(newDate.toString())
-////        return novaData.toString()
-//
-//        return sdf.format(date)
-//    }
 }

@@ -1,6 +1,7 @@
 package gustavo.com.van.activity
 
 import android.annotation.TargetApi
+import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,6 +30,7 @@ import gustavo.com.van.firebase.auth.service.FirebaseAuthService
 import gustavo.com.van.firebase.database.references.FirebaseReference
 import gustavo.com.van.firebase.database.service.FirebaseService
 import gustavo.com.van.storage.UserStorage
+import gustavo.com.van.utils.Calendar
 import java.text.DateFormat
 
 import java.text.SimpleDateFormat
@@ -62,7 +64,7 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         toggle.syncState()
         navView!!.setNavigationItemSelectedListener(this)
 
-        calendarData.text = getCalendarFormated()
+        calendarData.text = Calendar().getCalendarFormated()
 
         println("User role : ")
         println(UserStorage.userStorage?.van.toString())
@@ -77,74 +79,29 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         })
 
         uid = FirebaseAuthService().getUserID()
-//        FirebaseService().setUserIDVans(uid,vanReference)
-
-//        buttonVou.setBackgroundColor(Color.GRAY)
-//        buttonVou.background.colorFilter = PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN)
-//        buttonVouColor = Color.LTGRAY
         buttonVou.setOnClickListener{
             if(buttonVouColor == Color.LTGRAY){
                 buttonVou.background.colorFilter = PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN)
                 buttonVouColor = Color.GREEN
-                FirebaseService().setVouVans(uid!!,vanReference!!,"sim",getCalendarFormated())
-//                println("Data teste : ")
-//                println(getCalendarFormated())
+                FirebaseService().setVouVans(uid!!,vanReference!!,"sim",Calendar().getCalendarFormated())
             }else{
                 buttonVou.background.colorFilter = PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN)
                 buttonVouColor = Color.LTGRAY
-                FirebaseService().setVouVans(uid!!,vanReference!!,"nao",getCalendarFormated())
-//            }
+                FirebaseService().setVouVans(uid!!,vanReference!!,"nao",Calendar().getCalendarFormated())
+            }
         }
-
-////            val color = buttonVou.background as ColorDrawable
-////            if(color.color == Color.GRAY){
-////                buttonVou.setBackgroundColor(Color.GREEN)
-////                FirebaseService().setVouVans(uid,vanReference,"sim",getCalendarFormated())
-//////                println("Data teste : ")
-//////                println(getCalendarFormated())
-////            }else{
-////                buttonVou.setBackgroundColor(Color.GRAY)
-////                FirebaseService().setVouVans(uid,vanReference,"nao",getCalendarFormated())
-////            }
-        }
-
-
-
-//        buttonVolto.background.colorFilter = PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN)
-//        buttonVoltoColor = Color.LTGRAY
 
         buttonVolto.setOnClickListener{
             if(buttonVoltoColor == Color.LTGRAY){
                 buttonVolto.background.colorFilter = PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN)
                 buttonVoltoColor = Color.GREEN
-                FirebaseService().setVoltoVans(uid!!,vanReference!!,"sim",getCalendarFormated())
+                FirebaseService().setVoltoVans(uid!!,vanReference!!,"sim",Calendar().getCalendarFormated())
             }else{
                 buttonVolto.background.colorFilter = PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN)
                 buttonVoltoColor = Color.LTGRAY
-                FirebaseService().setVoltoVans(uid!!,vanReference!!,"nao",getCalendarFormated())
+                FirebaseService().setVoltoVans(uid!!,vanReference!!,"nao",Calendar().getCalendarFormated())
             }
         }
-    }
-
-    fun getCalendarFormated():String {
-        val date = Date()
-        val sdf: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        val dateParsed = sdf.parse(date.toString())
-
-
-//        val novaData=  sdf.parse(sdf.format(date)) as Date
-
-
-//        val calendar: Calendar = Calendar.getInstance()
-//        calendar.time = novaData
-//        val newDate: Date = calendar.time
-//        println("Calendar : ")
-//        println(calendar.time.toString())
-//        println("Testando date")
-//        println(newDate.toString())
-//        return novaData.toString()
-
-        return sdf.format(date)
     }
 
     fun setVou(){
@@ -158,8 +115,8 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     fun setStudentResponse(){
-        FirebaseService().setVouVans(uid!!,vanReference!!,"nao",getCalendarFormated())
-        FirebaseService().setVoltoVans(uid!!,vanReference!!,"nao",getCalendarFormated())
+        FirebaseService().setVouVans(uid!!,vanReference!!,"nao",Calendar().getCalendarFormated())
+        FirebaseService().setVoltoVans(uid!!,vanReference!!,"nao",Calendar().getCalendarFormated())
     }
 
     fun drawerInitializer(): ActionBarDrawerToggle{
@@ -189,6 +146,13 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_item_two -> {
                 Toast.makeText(this, "Em construção!", Toast.LENGTH_SHORT).show()
             }
+            R.id.nav_item_tree -> {
+                Toast.makeText(this, "Até logo!", Toast.LENGTH_SHORT).show()
+                UserStorage.userStorage = null
+                val intent = Intent(this@MainStudentActivity, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+        }
 //            R.id.nav_item_three -> {
 //                Toast.makeText(this, "Menu 3", Toast.LENGTH_SHORT).show()
 //            }
@@ -201,6 +165,5 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
         drawerLayout!!.closeDrawer(GravityCompat.START)
         return true
-
     }
 }

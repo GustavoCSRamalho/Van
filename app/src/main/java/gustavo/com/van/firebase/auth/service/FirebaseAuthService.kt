@@ -28,14 +28,8 @@ class FirebaseAuthService {
             mProgressBar()
             if (task.isSuccessful) {
                 Log.d(TAG, "createUserWithEmail:success")
-                val userId = mAuth!!.currentUser!!.uid
                 verifyEmail(context)
-                val currentUserDb = FirebaseReference().getChildReferenceIdUserDB(userId)
-                FirebaseService().setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user,currentUserDb)
-//                val vanReference = FirebaseReference().getVanReferenceVans(user.van.toString())
-//                FirebaseService().setUserIDVans(userId,vanReference)
-
-//                updateUserInfoAndUI()
+                FirebaseService().setFirstnameAndLastNameAndRoleAndEmailAndVanUserDB(user)
             } else {
                 Toast.makeText(context, "Authentication failed.",
                     Toast.LENGTH_SHORT).show()
@@ -71,11 +65,10 @@ class FirebaseAuthService {
                                    context: Context, updateUI: (user: User) -> Unit){
         mAuth!!.signInWithEmailAndPassword(user.email!!, user.password!!).addOnCompleteListener{
             task ->
-
             if(task.isSuccessful){
                 Log.d(TAG,"signInWithEmail:success")
-                val firebaseReference = FirebaseReference().getChildReferenceUserDB()
-                FirebaseService().getUser(user,firebaseReference, {
+
+                FirebaseService().getUser(user, {
                     updateUI(it)
                     progressBar()
                 })
@@ -96,7 +89,6 @@ class FirebaseAuthService {
                     val message = "Email sent."
                     Log.d(TAG, message)
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-//                    updateUI()
                 } else {
                     Log.w(TAG, task.exception!!.message)
                     Toast.makeText(context, "No user found with this email.", Toast.LENGTH_SHORT).show()
