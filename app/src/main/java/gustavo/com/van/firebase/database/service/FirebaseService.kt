@@ -36,10 +36,6 @@ class FirebaseService {
         currentUserDb.child("van").setValue(user.van)
     }
 
-    fun setUserIDVans(userId: String, vanReference : DatabaseReference) {
-        vanReference.child("userId").setValue(userId)
-    }
-
     fun setVouVans(userId: String, vanReference : DatabaseReference,vou: String,date: String) {
         vanReference.child(date.replace("/","_")).child(userId).child("vou").setValue(vou)
     }
@@ -51,7 +47,6 @@ class FirebaseService {
     fun getStudentVan(setVou:() -> Unit,setVolto:() -> Unit,setStudentResponse: () -> Unit){
         val date = Calendar().getCalendarFormated()
         val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
-        var exist = false
         vanReference.child(date.replace("/","_")).child(FirebaseAuthService().getUserID()).addListenerForSingleValueEvent(
             object: ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
@@ -64,12 +59,12 @@ class FirebaseService {
                     setStudentResponse()
                 }else{
                     var studentResponse = data.getValue(StudentResponse::class.java) as StudentResponse
-                            if(studentResponse.vou.equals("sim")){
-                                setVou()
-                            }
-                            if(studentResponse.volto.equals("sim")){
-                                setVolto()
-                            }
+                    if(studentResponse.vou.equals("sim")){
+                        setVou()
+                    }
+                    if(studentResponse.volto.equals("sim")){
+                        setVolto()
+                    }
                 }
             }
         })
@@ -87,15 +82,10 @@ class FirebaseService {
                     val children = data.children
                     println(children.toString())
                     children.forEach{
-                        println("key : ")
-                        println(it.key.toString())
-                        println("value : ")
-                        println(it.getValue(StudentResponse::class.java).toString())
                         var studentResponse = it.getValue(StudentResponse::class.java) as StudentResponse
                         setUserInformationsIntoStudentResponse(it.key.toString(),studentResponse,{
                             metodo(it)
                         })
-
                     }
                 }
                 override fun onCancelled(data: DatabaseError) {
@@ -116,12 +106,9 @@ class FirebaseService {
                 val children = data.children
                 children.forEach{
                     val key = it.key.toString()
-                    println("DATA : ")
-                    println(key)
                     setListVan(key)
                 }
             }
-
         })
     }
 
@@ -132,20 +119,14 @@ class FirebaseService {
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-
             override fun onDataChange(data: DataSnapshot) {
                 var user = data.getValue(User::class.java) as User
 
                 studentResponse!!.nomeESobrenome = user.firstName + " " + user.lastName
                 studentResponse!!.foto = "Sua foto aqui"
-                println("StudentResponse information : ")
-                println(studentResponse.toString())
                 metodo(ModelStudentResponseList(key = data.key.toString(),value = studentResponse.copy()))
-
             }
-
         })
-
     }
 
     fun getUser(user: User, method: (user: User) -> Unit){
@@ -156,7 +137,6 @@ class FirebaseService {
                 children.forEach{
                     val userDB = (it.getValue(User::class.java) as User )
                     if(userDB.email.toString().equals(user.email.toString())){
-                        //Mudar o van para pegar automaticamente
                         UserStorage.userStorage = userDB.copy()
                         method(userDB)
                     }
