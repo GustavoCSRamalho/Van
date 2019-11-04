@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.van_item.view.*
 
 
 class VanListAdapter(private val studentResponseList: List<StudentResponse>,
-                     private val context: Context): Adapter<VanListAdapter.ViewHolder>() {
+                     private val context: Context): Adapter<VanListAdapter.ViewHolder>(){
 
     var itemViewList = mutableListOf<Int>()
 

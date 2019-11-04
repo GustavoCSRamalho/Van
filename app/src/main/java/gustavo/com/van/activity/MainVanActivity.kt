@@ -2,24 +2,28 @@ package gustavo.com.van.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import gustavo.com.van.R
 import gustavo.com.van.adapter.VanListAdapter
-import gustavo.com.van.firebase.database.references.FirebaseReference
 import gustavo.com.van.firebase.database.service.FirebaseService
 import gustavo.com.van.model.ModelStudentResponseList
-import gustavo.com.van.model.StudentResponse
-import gustavo.com.van.storage.UserStorage
 import gustavo.com.van.utils.Calendar
 import kotlinx.android.synthetic.main.activity_main_van.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
+
+import gustavo.com.van.model.StudentResponse
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
+
 
 class MainVanActivity : AppCompatActivity() {
 
     var mapStudentResponse = mutableMapOf<String, StudentResponse>()
+    var list = mutableListOf<StudentResponse>()
+    var vanListAdapter: VanListAdapter? = null
     lateinit var recyclerView: RecyclerView
 
     fun setMapStudentResponse(){
@@ -30,6 +34,7 @@ class MainVanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_van)
         recyclerView = van_list_recyclerview
+        setRecyclerViewItemTouchListener()
         FirebaseService().getDayStudentsVans(Calendar().getCalendarFormated(), {
             setMultableStudentResponses(it)
         },{setMapStudentResponse()})
@@ -37,7 +42,7 @@ class MainVanActivity : AppCompatActivity() {
 
     fun setMultableStudentResponses(modelStudentResponseList:ModelStudentResponseList){//key: String, value: StudentResponse
         mapStudentResponse.put(modelStudentResponseList.key!!, modelStudentResponseList.value!!)
-        var list = mutableListOf<StudentResponse>()
+        list = mutableListOf<StudentResponse>()
         mapStudentResponse.forEach{
             list.add(it.value)
         }
@@ -45,8 +50,54 @@ class MainVanActivity : AppCompatActivity() {
     }
 
     fun atualizarUI(list: List<StudentResponse>){
-        recyclerView.adapter = VanListAdapter(list,this)
+        vanListAdapter = VanListAdapter(list,this)
+        recyclerView.adapter = vanListAdapter
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
+
+//        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+//        recyclerView.addItemDecoration(dividerItemDecoration)
+        setRecyclerViewItemTouchListener()
+
+
+    }
+
+    private fun setRecyclerViewItemTouchListener() {
+
+        //1
+//        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT or ItemTouchHelper.UP or ItemTouchHelper.DOWN) {
+//            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
+//                //2
+//                return false
+//            }
+//
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+//                //3
+//                val position = viewHolder.adapterPosition
+//                list.removeAt(position)
+//                recyclerView.adapter!!.notifyItemRemoved(position)
+//            }
+//        }
+
+        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or  ItemTouchHelper.DOWN, 0) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
+                val sourcePosition = viewHolder.adapterPosition
+                val targetPosition = viewHolder1.adapterPosition
+                Collections.swap(list, sourcePosition, targetPosition)
+                vanListAdapter?.notifyItemMoved(sourcePosition,targetPosition)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                //3
+                val position = viewHolder.adapterPosition
+//                list.removeAt(position)
+//                recyclerView.adapter!!.notifyItemRemoved(position)
+            }
+        }
+
+        //4
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }
