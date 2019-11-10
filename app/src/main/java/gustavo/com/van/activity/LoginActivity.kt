@@ -69,11 +69,10 @@ class LoginActivity : AppCompatActivity() {
         var intent: Intent? = null
         if(user.role.equals("Estudante")){
             intent = Intent(this@LoginActivity, MainStudentActivity::class.java)
-            Toast.makeText(this@LoginActivity, "Student",Toast.LENGTH_LONG).show()
-            println(UserStorage.userStorage.toString())
+//            Toast.makeText(this@LoginActivity, "Student",Toast.LENGTH_LONG).show()
         }else{
             intent = Intent(this@LoginActivity, MainVanActivity::class.java)
-            Toast.makeText(this@LoginActivity, "Van",Toast.LENGTH_LONG).show()
+//            Toast.makeText(this@LoginActivity, "Van",Toast.LENGTH_LONG).show()
         }
         intent!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

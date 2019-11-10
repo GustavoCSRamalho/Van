@@ -38,9 +38,6 @@ import java.text.SimpleDateFormat
 
 class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val C1 = Color.YELLOW
-    private val C2 = Color.GREEN
-
     var vanReference:DatabaseReference? = null
     var uid: String? = null
 
@@ -65,9 +62,6 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         navView!!.setNavigationItemSelectedListener(this)
 
         calendarData.text = Calendar().getCalendarFormated()
-
-        println("User role : ")
-        println(UserStorage.userStorage?.van.toString())
         vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
 
         FirebaseService().getStudentVan({
@@ -153,12 +147,6 @@ class MainStudentActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
         }
-//            R.id.nav_item_three -> {
-//                Toast.makeText(this, "Menu 3", Toast.LENGTH_SHORT).show()
-//            }
-//            R.id.nav_item_four -> {
-//                Toast.makeText(this, "Menu 4", Toast.LENGTH_SHORT).show()
-//            }
             else -> {
                 Toast.makeText(this, "Menu Default", Toast.LENGTH_SHORT).show()
             }

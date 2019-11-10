@@ -19,14 +19,9 @@ class MainVanActivity : AppCompatActivity() {
 
     var mapStudentResponse = mutableMapOf<String, StudentResponse>()
     var list = mutableListOf<StudentResponse>()
-    var listOrdered = mutableMapOf<String,StudentResponse>()
     var vanListAdapter: VanListAdapter? = null
     lateinit var recyclerView: RecyclerView
     var dayCheck = Calendar().getCalendarFormated()
-
-    fun setMapStudentResponse(){
-        mapStudentResponse = mutableMapOf<String, StudentResponse>()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +30,10 @@ class MainVanActivity : AppCompatActivity() {
         setRecyclerViewItemTouchListener()
         FirebaseService().getDayStudentsVans(Calendar().getCalendarFormated(), {
             setMultableStudentResponses(it)
-        },{setMapStudentResponse()}, {
+        }, {
             if(dayCheck.equals(Calendar().getCalendarFormated()).not()){
-//                listOrdered = mutableMapOf<String,StudentResponse>()
                 dayCheck = Calendar().getCalendarFormated()
-                setMapStudentResponse()
+                mapStudentResponse = mutableMapOf<String, StudentResponse>()
                 list = mutableListOf<StudentResponse>()
             }
         })
@@ -47,14 +41,9 @@ class MainVanActivity : AppCompatActivity() {
 
     fun setMultableStudentResponses(modelStudentResponseList:ModelStudentResponseList){//key: String, value: StudentResponse
         var exist = mapStudentResponse.containsKey(modelStudentResponseList.key!!)
-        println("Exist : ")
-        println(exist)
         mapStudentResponse.put(modelStudentResponseList.key!!, modelStudentResponseList.value!!)
-//        var novaLista = list
         if(exist.not()){
             var value = modelStudentResponseList.value!!
-            println("Value ")
-            println(value)
             list.add(value)
         }else{
             list.forEach{
@@ -64,37 +53,6 @@ class MainVanActivity : AppCompatActivity() {
                 }
             }
         }
-
-        println("KEY : ")
-        println(modelStudentResponseList.value!!.key)
-        println("Itens : ")
-        list.forEach { println(it) }
-//        var listNew = list.map{
-//            s
-//            if(it.key.equals(modelStudentResponseList.key!!)){
-//                 it.vou = modelStudentResponseList.value!!.vou.toString()
-//                 it.volto = modelStudentResponseList.value!!.volto.toString()
-//                return it
-//            }else{
-//                return it
-//            }
-//        }.toList()
-//        mapStudentResponse
-
-//        list = mutableListOf<StudentResponse>()
-
-//        mapStudentResponse.forEach{
-////            if(listOrdered.contains(it.key).not()){
-////                listOrdered.put(it.key,listOrdered.size + 1)
-////            }
-//            list.add(it.value)
-//        }
-//        val mapOrdered = listOrdered.toList().sortedBy { (key, value) -> value }.toMap()
-//        mapOrdered.forEach{
-//            val student = mapStudentResponse.get(it.key)
-//            list.add(student!!)
-//        }
-
         atualizarUI(list)
     }
 
@@ -103,10 +61,6 @@ class MainVanActivity : AppCompatActivity() {
         recyclerView.adapter = vanListAdapter
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
-
-//        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-//        recyclerView.addItemDecoration(dividerItemDecoration)
-//        setRecyclerViewItemTouchListener()
     }
 
     private fun setRecyclerViewItemTouchListener() {
@@ -116,24 +70,17 @@ class MainVanActivity : AppCompatActivity() {
                 val sourcePosition = viewHolder.adapterPosition
                 val targetPosition = viewHolder1.adapterPosition
                 Collections.swap(list, sourcePosition, targetPosition)
-                println("SourcePosition : ")
-                println(sourcePosition)
-                println("targetPosition : ")
-                println(targetPosition)
-
                 vanListAdapter?.notifyItemMoved(sourcePosition,targetPosition)
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                //3
                 val position = viewHolder.adapterPosition
 //                list.removeAt(position)
 //                recyclerView.adapter!!.notifyItemRemoved(position)
             }
         }
 
-        //4
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }

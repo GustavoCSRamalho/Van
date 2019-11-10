@@ -76,16 +76,13 @@ class FirebaseService {
 
 
     fun getDayStudentsVans(date: String, metodo:(modelStudentResponseList: ModelStudentResponseList) -> Unit,
-                           setMapStudentResponse: () -> Unit,setClearVariables: () -> Unit){
+                           setClearVariables: () -> Unit){
         val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
         vanReference.child(date.replace("/","_")).
             addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(data: DataSnapshot) {
-//                    setMapStudentResponse() // Adicionado por ultimo, qualquer erro mudar **
-                    println("Entrei no looop")
                     setClearVariables()
                     val children = data.children
-                    println(children.toString())
                     children.forEach{
                         var studentResponse = it.getValue(StudentResponse::class.java) as StudentResponse
                         setUserInformationsIntoStudentResponse(it.key.toString(),studentResponse,{
