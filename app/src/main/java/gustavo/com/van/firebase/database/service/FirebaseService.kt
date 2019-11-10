@@ -37,10 +37,14 @@ class FirebaseService {
     }
 
     fun setVouVans(userId: String, vanReference : DatabaseReference,vou: String,date: String) {
+        val userId = mAuth!!.currentUser!!.uid
+        vanReference.child(date.replace("/","_")).child(userId).child("key").setValue(userId)
         vanReference.child(date.replace("/","_")).child(userId).child("vou").setValue(vou)
     }
 
     fun setVoltoVans(userId: String, vanReference : DatabaseReference,volto: String,date: String) {
+        val userId = mAuth!!.currentUser!!.uid
+        vanReference.child(date.replace("/","_")).child(userId).child("key").setValue(userId)
         vanReference.child(date.replace("/","_")).child(userId).child("volto").setValue(volto)
     }
 
@@ -72,13 +76,14 @@ class FirebaseService {
 
 
     fun getDayStudentsVans(date: String, metodo:(modelStudentResponseList: ModelStudentResponseList) -> Unit,
-                           setMapStudentResponse: () -> Unit){
+                           setMapStudentResponse: () -> Unit,setClearVariables: () -> Unit){
         val vanReference = FirebaseReference().getVanReferenceVans(UserStorage.userStorage?.van.toString())
         vanReference.child(date.replace("/","_")).
             addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(data: DataSnapshot) {
-                    setMapStudentResponse() // Adicionado por ultimo, qualquer erro mudar **
+//                    setMapStudentResponse() // Adicionado por ultimo, qualquer erro mudar **
                     println("Entrei no looop")
+                    setClearVariables()
                     val children = data.children
                     println(children.toString())
                     children.forEach{

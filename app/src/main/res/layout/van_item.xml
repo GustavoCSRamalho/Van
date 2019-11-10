@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="50px"
                 android:fontFamily="cursive"
-                android:text="Gustavo Ramalho"
+                android:text="Nome"
                 android:textSize="30dp"
                 android:textStyle="bold" />
         </LinearLayout>

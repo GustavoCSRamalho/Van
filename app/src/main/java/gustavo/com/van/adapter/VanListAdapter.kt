@@ -48,6 +48,7 @@ class VanListAdapter(private val studentResponseList: List<StudentResponse>,
 
             vou.text = studentResponse.vou.toString()
             volto.text = studentResponse.volto.toString()
+            nome.text = studentResponse.nomeESobrenome.toString()
             if(studentResponse.vou.toString().equals("nao")){
                 itemView.van_checkbox_vou.isEnabled = false
             }else{
